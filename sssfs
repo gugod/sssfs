@@ -8,7 +8,7 @@ package S3VFS::File {
     use Digest::SHA qw(sha1_hex);
 
     has name  => (is => "ro", isa => "Str", required => 1);
-    has mtime => (is => "ro", isa => "Int", required => 0);
+    has mtime => (is => "rw", isa => "Int", required => 0);
     has size  => (is => "rw", isa => "Int", required => 0);
     has parent => (is => "ro", isa => "Str", required => 1);
     has refresh_at => (
@@ -232,9 +232,6 @@ package S3VFS {
         my $laundry = $self->dirty_laundry;
 
         if ($path) {
-            for (@$laundry) {
-                say "WASH: $path <=> " . $_->path;
-            }
             my ($i) = grep { $path eq $laundry->[$_]->path } 0..$#$laundry;
             if (defined($i)) {
                 my $f = splice(@$laundry, $i, 1);
@@ -438,7 +435,6 @@ package S3VFS {
 package main;
 
 use Fuse;
-use YAML;
 
 sub mount {
     my $s3vfs = shift;
@@ -475,9 +471,7 @@ sub main {
 
     mount($s3vfs, $mountpoint);
 
-    say YAML::Dump($s3vfs->fs);
-
-    exit 0;
+    # say YAML::Dump($s3vfs->fs);
 }
 
 main();
