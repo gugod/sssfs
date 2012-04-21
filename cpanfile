@@ -4,4 +4,6 @@ requires 'Fuse';
 requires 'Moose';
 requires 'Net::Amazon::S3';
 requires 'Path::Class';
+requires 'methods';
+requires 'invoker';
 requires 'YAML';
