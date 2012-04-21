@@ -299,6 +299,7 @@ package S3VFS {
     }
 
     method open ($path, $flags, $fileinfo) {
+        utf8::decode($path) unless utf8::is_utf8($path);
         my $f = $->fs->{$path};
 
         my $local_cache_file = $->mapper->local_cache_file($f, 1);
